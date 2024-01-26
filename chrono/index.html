@@ -114,6 +114,9 @@
                 }
             }
 
+            document.ontouchend = e => e.preventDefault();
+            document.ontouchcancel = e => e.preventDefault();
+
             const frame = () => {
                 if (isRunning) {
                     if (! isVisible) {
