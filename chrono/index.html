@@ -23,7 +23,7 @@
             With phone: Touch anywhere to start, then click again to stop.
         </div>
         <br>
-        <h1 id="chrono"></h1>
+        <h1 id="chrono" style="text-align: center;"></h1>
         <div>
             <h3>log (time | start | end)</h3>
             <div id="log"></div>
@@ -70,19 +70,6 @@
                 }
             }
             
-            // document.ontouchend = event => {
-            //     if (isRunning == true) {
-            //         end()
-            //     } else if (isRunning == false) {
-            //         isRunning = true;
-            //         startDate = Date.now();
-            //     }
-            //     event.preventDefault()
-            // }
-
-            // document.ontouchend = e => e.preventDefault();
-            // document.ontouchcancel = e => e.preventDefault();
-
             const frame = () => {
                 if (isRunning) {
                     let now = new Date(Date.now() - startDate);
