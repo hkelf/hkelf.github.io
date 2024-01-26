@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <style>
+            body {
+              font-family: 'Courier New', monospace;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>
+            just a chronometer
+        </h2>
+        <div>
+            With keyboard: Press space to start. Then press any key to stop.
+            <br>
+            With mouse: Click anywhere to start, then click again to stop.
+            <br>
+            With phone: Touch anywhere to start, then click again to stop.
+        </div>
+        <br>
+        <div>
+            <label for="visible">Hide while running ?</label>
+            <input type="checkbox" name="visible" id="visible">
+        </div>
+        <br>
+        <h1 id="chrono"></h1>
+        <br>
+        <script>
+            let isRunning = false; 
+            let start = 0;
+            let chrono = document.getElementById('chrono');
+            chrono.innerText = `00:00,00`;
+            let visibleCB = document.getElementById('visible');
+            let isVisible = true;
+
+            visibleCB.onmousedown = function(e) {
+                e.stopPropagation();
+                isVisible = this.checked;
+            }
+
+            visibleCB.onkeydown = e => e.preventDefault();
+
+            document.onkeydown = event => {
+                if (isRunning == true) {
+                    isRunning = false;
+                    let now = new Date(Date.now() - start);
+                    chrono.innerText = `${(now.getHours()-1) != 0 ? (now.getHours()-1).toString().padStart(2, "0") + ":" : ""}${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}.${now.getMilliseconds().toString().padStart(3, "0")}`;
+                } else if (event.keyCode == 32 && isRunning == false) {
+                    isRunning = true;
+                    start = Date.now();
+                }
+            }
+
+            document.onmousedown = event => {
+                if (isRunning == true) {
+                    isRunning = false;
+                    let now = new Date(Date.now() - start);
+                    chrono.innerText = `${(now.getHours()-1) != 0 ? (now.getHours()-1).toString().padStart(2, "0") + ":" : ""}${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}.${now.getMilliseconds().toString().padStart(3, "0")}`;
+                } else if (isRunning == false) {
+                    isRunning = true;
+                    start = Date.now();
+                }
+            }
+            
+            const frame = () => {
+                if (isRunning) {
+                    if (! isVisible) {
+                        chrono.innerText = '??:??,???'
+                    } else {
+                        let now = new Date(Date.now() - start);
+                        chrono.innerText = `${(now.getHours()-1) != 0 ? (now.getHours()-1).toString().padStart(2, "0") + ":" : ""}${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}.${now.getMilliseconds().toString().padStart(3, "0")}`;
+                    }
+                }
+
+                window.requestAnimationFrame(frame);
+            }
+
+            window.requestAnimationFrame(frame)
+        </script>
+
+    </body>
+
+</html>
