@@ -8,10 +8,10 @@
     </head>
     <body>
         <h2>
-            just a chronometer
+            just a chrono
         </h2>
         <div>
-            With keyboard: Press space to start. Then press any key to stop.
+            With keyboard: Press space to start, then press any key (don't try f5 plz) to stop.
             <br>
             With mouse: Click anywhere to start, then click again to stop.
             <br>
@@ -22,16 +22,36 @@
             <label for="visible">Hide while running ?</label>
             <input type="checkbox" name="visible" id="visible">
         </div>
-        <br>
         <h1 id="chrono"></h1>
-        <br>
+        <div>
+            <h3>log (time | start | end)</h3>
+            <div id="log"></div>
+        </div>
         <script>
             let isRunning = false; 
-            let start = 0;
+            let startDate = 0;
             let chrono = document.getElementById('chrono');
             chrono.innerText = `00:00,00`;
             let visibleCB = document.getElementById('visible');
             let isVisible = true;
+            let logContainer = document.getElementById('log');
+
+            const timeToString = time => `${(time.getHours()-1) != 0 ? (time.getHours()-1).toString().padStart(2, "0") + ":" : ""}${time.getMinutes().toString().padStart(2, "0")}:${time.getSeconds().toString().padStart(2, "0")}.${time.getMilliseconds().toString().padStart(3, "0")}`
+
+            const end = () => {
+                isRunning = false;
+                let end = Date.now();
+                let record = new Date(end - startDate);
+                chrono.innerText = timeToString(record);
+                let line = document.createElement('div');
+                line.style = 'font-style: italic;'
+                line.innerText += `${timeToString(record)} | ${new Date(startDate).toLocaleString()} | ${new Date(end).toLocaleString()}`;
+                if (logContainer.firstChild) {
+                    logContainer.insertBefore(line, logContainer.firstChild);
+                } else {
+                    logContainer.appendChild(line)
+                }
+            }
 
             visibleCB.onmousedown = function(e) {
                 e.stopPropagation();
@@ -42,23 +62,19 @@
 
             document.onkeydown = event => {
                 if (isRunning == true) {
-                    isRunning = false;
-                    let now = new Date(Date.now() - start);
-                    chrono.innerText = `${(now.getHours()-1) != 0 ? (now.getHours()-1).toString().padStart(2, "0") + ":" : ""}${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}.${now.getMilliseconds().toString().padStart(3, "0")}`;
+                    end()
                 } else if (event.keyCode == 32 && isRunning == false) {
                     isRunning = true;
-                    start = Date.now();
+                    startDate = Date.now();
                 }
             }
 
             document.onmousedown = event => {
                 if (isRunning == true) {
-                    isRunning = false;
-                    let now = new Date(Date.now() - start);
-                    chrono.innerText = `${(now.getHours()-1) != 0 ? (now.getHours()-1).toString().padStart(2, "0") + ":" : ""}${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}.${now.getMilliseconds().toString().padStart(3, "0")}`;
+                    end()
                 } else if (isRunning == false) {
                     isRunning = true;
-                    start = Date.now();
+                    startDate = Date.now();
                 }
             }
             
@@ -67,7 +83,7 @@
                     if (! isVisible) {
                         chrono.innerText = '??:??,???'
                     } else {
-                        let now = new Date(Date.now() - start);
+                        let now = new Date(Date.now() - startDate);
                         chrono.innerText = `${(now.getHours()-1) != 0 ? (now.getHours()-1).toString().padStart(2, "0") + ":" : ""}${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}.${now.getMilliseconds().toString().padStart(3, "0")}`;
                     }
                 }
