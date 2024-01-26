@@ -19,7 +19,7 @@
         </div>
         <br>
         <div>
-            <label for="visible">Hide while running ?</label>
+            <label for="visible" id="visibleLabel">Hide while running ?</label>
             <input type="checkbox" name="visible" id="visible">
         </div>
         <h1 id="chrono"></h1>
@@ -33,6 +33,7 @@
             let chrono = document.getElementById('chrono');
             chrono.innerText = `00:00,00`;
             let visibleCB = document.getElementById('visible');
+            let visibleLabel = document.getElementById('visibleLabel');
             let isVisible = true;
             let logContainer = document.getElementById('log');
 
@@ -53,7 +54,33 @@
                 }
             }
 
+//            el.addEventListener("touchstart", handleStart);
+
             visibleCB.onmousedown = function(e) {
+                e.stopPropagation();
+                isVisible = this.checked;
+            }
+
+            visibleCB.onkeydown = e => e.preventDefault();
+
+            visibleLabel.onmousedown = function(e) {
+                e.stopPropagation();
+                isVisible = this.checked;
+            }
+
+            visibleLabel.ontouchstart = function(e) {
+                e.stopPropagation();
+                isVisible = this.checked;
+            }
+
+            visibleLabel.onkeydown = e => e.preventDefault();
+
+            visibleCB.onmousedown = function(e) {
+                e.stopPropagation();
+                isVisible = this.checked;
+            }
+
+            visibleCB.ontouchstart = function(e) {
                 e.stopPropagation();
                 isVisible = this.checked;
             }
@@ -78,6 +105,15 @@
                 }
             }
             
+            document.ontouchstart = event => {
+                if (isRunning == true) {
+                    end()
+                } else if (isRunning == false) {
+                    isRunning = true;
+                    startDate = Date.now();
+                }
+            }
+
             const frame = () => {
                 if (isRunning) {
                     if (! isVisible) {
