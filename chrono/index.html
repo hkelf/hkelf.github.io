@@ -69,6 +69,17 @@
                     startDate = Date.now();
                 }
             }
+
+            document.ontouchstart = event => {
+                if (isRunning == true) {
+                    end()
+                } else if (isRunning == false) {
+                    isRunning = true;
+                    startDate = Date.now();
+                }
+            }
+
+            document.ontouchend = event => event.preventDefault()
             
             const frame = () => {
                 if (isRunning) {
