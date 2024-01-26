@@ -4,13 +4,18 @@
             body {
               font-family: 'Courier New', monospace;
             }
+            html {
+                -webkit-text-size-adjust: 100%;
+                -moz-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+            }
         </style>
     </head>
     <body>
         <h2>
             just a chrono
         </h2>
-        <div>
+        <div style="font-size: 1.5em; font-style: italic;">
             With keyboard: Press space to start, then press any key (don't try f5 plz) to stop.
             <br>
             With mouse: Click anywhere to start, then click again to stop.
@@ -19,7 +24,7 @@
         </div>
         <br>
         <div>
-            <label for="visible" id="visibleLabel" style="font-size: 1.5em;">Hide while running ?</label>
+            <label for="visible" id="visibleLabel" style="font-size: 2.5em;">Hide while running ?</label>
             <input type="checkbox" name="visible" id="visible" style="width: 20px; height: 20px;">
         </div>
         <h1 id="chrono"></h1>
@@ -105,17 +110,18 @@
                 }
             }
             
-            document.ontouchstart = event => {
-                if (isRunning == true) {
-                    end()
-                } else if (isRunning == false) {
-                    isRunning = true;
-                    startDate = Date.now();
-                }
-            }
+            // document.ontouchend = event => {
+            //     if (isRunning == true) {
+            //         end()
+            //     } else if (isRunning == false) {
+            //         isRunning = true;
+            //         startDate = Date.now();
+            //     }
+            //     event.preventDefault()
+            // }
 
-            document.ontouchend = e => e.preventDefault();
-            document.ontouchcancel = e => e.preventDefault();
+            // document.ontouchend = e => e.preventDefault();
+            // document.ontouchcancel = e => e.preventDefault();
 
             const frame = () => {
                 if (isRunning) {
