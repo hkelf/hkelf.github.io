@@ -23,10 +23,6 @@
             With phone: Touch anywhere to start, then click again to stop.
         </div>
         <br>
-        <div>
-            <label for="visible" id="visibleLabel" style="font-size: 2.5em;">Hide while running ?</label>
-            <input type="checkbox" name="visible" id="visible" style="width: 20px; height: 20px;">
-        </div>
         <h1 id="chrono"></h1>
         <div>
             <h3>log (time | start | end)</h3>
@@ -37,9 +33,6 @@
             let startDate = 0;
             let chrono = document.getElementById('chrono');
             chrono.innerText = `00:00,00`;
-            let visibleCB = document.getElementById('visible');
-            let visibleLabel = document.getElementById('visibleLabel');
-            let isVisible = true;
             let logContainer = document.getElementById('log');
 
             const timeToString = time => `${(time.getHours()-1) != 0 ? (time.getHours()-1).toString().padStart(2, "0") + ":" : ""}${time.getMinutes().toString().padStart(2, "0")}:${time.getSeconds().toString().padStart(2, "0")}.${time.getMilliseconds().toString().padStart(3, "0")}`
@@ -58,39 +51,6 @@
                     logContainer.appendChild(line)
                 }
             }
-
-//            el.addEventListener("touchstart", handleStart);
-
-            visibleCB.onmousedown = function(e) {
-                e.stopPropagation();
-                isVisible = this.checked;
-            }
-
-            visibleCB.onkeydown = e => e.preventDefault();
-
-            visibleLabel.onmousedown = function(e) {
-                e.stopPropagation();
-                isVisible = this.checked;
-            }
-
-            visibleLabel.ontouchstart = function(e) {
-                e.stopPropagation();
-                isVisible = this.checked;
-            }
-
-            visibleLabel.onkeydown = e => e.preventDefault();
-
-            visibleCB.onmousedown = function(e) {
-                e.stopPropagation();
-                isVisible = this.checked;
-            }
-
-            visibleCB.ontouchstart = function(e) {
-                e.stopPropagation();
-                isVisible = this.checked;
-            }
-
-            visibleCB.onkeydown = e => e.preventDefault();
 
             document.onkeydown = event => {
                 if (isRunning == true) {
@@ -125,12 +85,8 @@
 
             const frame = () => {
                 if (isRunning) {
-                    if (! isVisible) {
-                        chrono.innerText = '??:??,???'
-                    } else {
-                        let now = new Date(Date.now() - startDate);
-                        chrono.innerText = `${(now.getHours()-1) != 0 ? (now.getHours()-1).toString().padStart(2, "0") + ":" : ""}${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}.${now.getMilliseconds().toString().padStart(3, "0")}`;
-                    }
+                    let now = new Date(Date.now() - startDate);
+                    chrono.innerText = `${(now.getHours()-1) != 0 ? (now.getHours()-1).toString().padStart(2, "0") + ":" : ""}${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}.${now.getMilliseconds().toString().padStart(3, "0")}`;
                 }
 
                 window.requestAnimationFrame(frame);
