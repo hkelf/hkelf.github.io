@@ -1,0 +1,1 @@
+{ "name": "prototype-duel-sim", "private": true, "dependencies": { "jsdom": "^26.0.0" } }
